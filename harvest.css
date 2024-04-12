@@ -5,43 +5,36 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: large;
+  font-weight: bold;
 }
 .header {
   display: flex;
   justify-content: space-evenly;
 }
 #title {
+  position: fixed;
+  top: 0;
+  right: 50%;
   margin: 20px;
-  padding: 20px;
+  padding: 0;
+  font-size: x-large;
 }
-
-#map {
-  width: 1300px;
-  height: 700px;
-  background-color: #8eff66;
-  display: grid;
-  grid-template-columns: repeat(13, 100px);
-  gap: 0;
+.category {
+  position: fixed;
+  top: 0;
+  right: 20%;
+  display: flex;
+  flex-direction: column;
 }
-
-.grid {
-  width: 100px;
-  height: 100px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  position: relative;
+ul {
+  list-style-type: none;
 }
-
-.grid img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-}
-
 #score-container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: fixed;
+  top: 15px;
+  right: 15%;
   display: flex;
   flex-direction: column;
 }
@@ -53,6 +46,9 @@ body {
 }
 
 #play-button {
+  position: fixed;
+  bottom: 5%;
+  right: 50%;
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -65,4 +61,79 @@ body {
 
 #play-button:hover {
   background-color: #45a049;
+}
+#map {
+  position: absolute;
+  width: 1000px;
+  height: 500px;
+  background-color: lightblue;
+  top: 100px;
+  left: 50px;
+  display: grid;
+  grid-template-columns: repeat(10, 100px);
+  grid-template-rows: repeat(5, 100px);
+  gap: 0;
+  overflow: hidden;
+}
+#map::before,
+#map::after {
+  content: "";
+  position: absolute;
+}
+
+#map::before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 99px,
+    rgba(0, 0, 0, 0.1) 100px,
+    rgba(0, 0, 0, 0.1) 101px
+  );
+}
+
+#map::after {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    -90deg,
+    transparent,
+    transparent 99px,
+    rgba(0, 0, 0, 0.1) 100px,
+    rgba(0, 0, 0, 0.1) 101px
+  );
+}
+
+/*main content
+
+#map {
+  width: 1300px;
+  height: 700px;
+  background-color: #8eff66;
+  display: grid;
+  grid-template-columns: repeat(13, 100px);
+  gap: 0;
+}
+
+
+
+.grid img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+*/
+
+#selection {
+  position: absolute;
+  top: 100px;
+  left: 50px;
+  width: 1000px;
+  height: 500px;
+  outline: 1px solid red;
 }
