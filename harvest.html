@@ -9,20 +9,32 @@
   <body>
     <div class="header">
       <div id="title">Harvest</div>
+      <div class="category">
+        <ul>
+          <li>Gold:</li>
+          <li>Flower:</li>
+          <li>Grass:</li>
+        </ul>
+      </div>
       <div id="score-container">
-        <div id="flower-score">Flower: 0</div>
-        <div id="grass-score">Grass: 0</div>
-        <div id="gold-score">Gold: 0</div>
+        <div id="goldcount"></div>
+        <div id="flowercount"></div>
+        <div id="grasscount"></div>
       </div>
     </div>
     <div id="map">
-      <ul class="grid">
-        <img src="img/flower.png" alt="flower" />
-        <img src="img/gold.png" alt="gold" />
-        <img src="img/grass.png" alt="grass" />
-      </ul>
+      <canvas id="canvas1" class="gold"></canvas>
+      <canvas id="canvas2" class="flower"></canvas>
+      <canvas id="canvas3" class="grass"></canvas>
     </div>
+    <canvas id="selection"></canvas>
     <button id="play-button">PLAY</button>
+    <button id="reset-button">Reset</button>
     <script src="harvest.js"></script>
   </body>
 </html>
+<!--<ul class="grid">
+        <img src="img/flower.png" alt="flower" />
+        <img src="img/gold.png" alt="gold" />
+        <img src="img/grass.png" alt="grass" />
+      </ul>-->
