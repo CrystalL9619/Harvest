@@ -5,6 +5,7 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  flex-wrap: wrap;
 }
 .header {
   display: flex;
@@ -41,11 +42,16 @@ ul {
 #square-score {
   margin-bottom: 10px;
 }
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  position: fixed;
+  bottom: 12%;
+  right: 40%;
+}
 
 #play-button {
-  position: fixed;
-  bottom: 5%;
-  right: 50%;
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -56,13 +62,7 @@ ul {
   border-radius: 4px;
 }
 
-#play-button:hover {
-  background-color: #45a049;
-}
 #reset-button {
-  position: fixed;
-  bottom: 5%;
-  right: 40%;
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;

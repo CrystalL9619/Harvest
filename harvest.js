@@ -42,11 +42,22 @@ window.addEventListener("load", function () {
 
   let items = [];
   let isGameStarted = false; // Flag to check if the game has started
+  let isMapClickable = true; // Flag to check if the map is clickable
+
+  // Set initial button colors
+  playButton.style.backgroundColor = "#4caf50";
+  resetButton.style.backgroundColor = "#888e89";
 
   playButton.addEventListener("click", () => {
-    items = generateRandomElements();
-    isGameStarted = true; // Set the flag to true when the game starts
-    console.log(items);
+    if (!playButton.disabled) {
+      items = generateRandomElements();
+      isGameStarted = true; // Set the flag to true when the game starts
+      isMapClickable = true; // Enable map click events
+      playButton.disabled = true; // Disable the play button
+      playButton.style.backgroundColor = "#888e89"; // Change play button color
+      resetButton.style.backgroundColor = "#4caf50"; // Change reset button color
+      console.log(items);
+    }
   });
 
   function generateRandomElements() {
@@ -90,9 +101,10 @@ window.addEventListener("load", function () {
     let isSelecting = false;
 
     selection_canvas_context = selectionCanvas.getContext("2d");
+    selection_canvas_context.lineWidth = 1; // Set the stroke weight
 
     selectionCanvas.addEventListener("mousedown", function (event) {
-      if (!isGameStarted) return; // Prevent selection if the game hasn't started
+      if (!isGameStarted || !isMapClickable) return; // Prevent selection if the game hasn't started or map is not clickable
       isSelecting = true;
       selection.path = [];
       selection_canvas_context.clearRect(
@@ -119,7 +131,7 @@ window.addEventListener("load", function () {
     });
 
     selectionCanvas.addEventListener("mouseup", function (event) {
-      if (!isGameStarted) return; // Prevent selection if the game hasn't started
+      if (!isGameStarted || !isMapClickable) return; // Prevent selection if the game hasn't started or map is not clickable
       isSelecting = false;
       selection.path.push({
         x: event.clientX - selection_canvas_bounding_box.x,
@@ -144,12 +156,24 @@ window.addEventListener("load", function () {
       squareCount.innerHTML = itemsCount[0];
       circleCount.innerHTML = itemsCount[1];
       rectangleCount.innerHTML = itemsCount[2];
+
+      isMapClickable = false; // Disable map click events after selection
     });
   }
 
   function countItemsInSelection(items, selection) {
     const { path } = selection;
     let count = [0, 0, 0];
+
+    function getGridCellsInPath() {
+      const cells = new Set();
+      path.forEach(point => {
+        const gridX = Math.floor(point.x / 100);
+        const gridY = Math.floor(point.y / 100);
+        cells.add(`${gridX},${gridY}`);
+      });
+      return cells;
+    }
 
     function isPointInPath(x, y) {
       selection_canvas_context.beginPath();
@@ -158,20 +182,19 @@ window.addEventListener("load", function () {
         selection_canvas_context.lineTo(path[i].x, path[i].y);
       }
       selection_canvas_context.closePath();
-      return selection_canvas_context.isPointInPath(x, y);
+      return selection_canvas_context.isPointInPath(x, y) || selection_canvas_context.isPointInStroke(x, y);
     }
 
-    items.forEach((item) => {
-      const itemPoints = [
-        { x: item.x, y: item.y }, // Top-left
-        { x: item.x + 100, y: item.y }, // Top-right
-        { x: item.x, y: item.y + 100 }, // Bottom-left
-        { x: item.x + 100, y: item.y + 100 }, // Bottom-right
-        { x: item.x + 50, y: item.y + 50 } // Center
-      ];
-      const itemIndex = item.randomElementIndex;
+    const cellsInPath = getGridCellsInPath();
 
-      if (itemPoints.some(point => isPointInPath(point.x, point.y))) {
+    items.forEach((item) => {
+      const gridX = Math.floor(item.x / 100);
+      const gridY = Math.floor(item.y / 100);
+      const itemCenterX = item.x + 50;
+      const itemCenterY = item.y + 50;
+
+      if (cellsInPath.has(`${gridX},${gridY}`) || isPointInPath(itemCenterX, itemCenterY)) {
+        const itemIndex = item.randomElementIndex;
         if (itemIndex === 0) {
           count[0]++;
         } else if (itemIndex === 1) {
@@ -187,5 +210,8 @@ window.addEventListener("load", function () {
 
   resetButton.addEventListener("click", () => {
     location.reload();
+    playButton.disabled = false; // Enable the play button
+    playButton.style.backgroundColor = "#4caf50"; // Reset play button color
+    resetButton.style.backgroundColor = "#888e89"; // Reset reset button color
   });
 });
