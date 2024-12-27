@@ -36,9 +36,9 @@ ul {
   flex-direction: column;
 }
 
-#flower-score,
-#grass-score,
-#gold-score {
+#circle-score,
+#rectangle-score,
+#square-score {
   margin-bottom: 10px;
 }
 
